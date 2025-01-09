@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  portainer:
+    container_name: portainer
+    image: portainer/portainer-ce:latest
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./portainer-data:/data
+    ports:
+      - 9000:9000
+    restart: always
+    networks:
+      - DFD
+      
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    environment:
+      POSTGRES_DB: DFD
+      POSTGRES_USER: DFD
+      POSTGRES_PASSWORD: DFD2024
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./data:/postgresql/data
+      - ./postgre/init:/docker-entrypoint-initdb.d
+    restart: always
+    networks:
+      - DFD
+
+networks:
+  DFD:
